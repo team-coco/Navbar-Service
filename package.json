@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/codenamesgroup/search-navbar-service#readme",
   "dependencies": {
+    "axios": "^0.18.0",
     "babel-preset-es2015": "^6.24.1",
     "css-loader": "^0.28.10",
     "jquery": "^3.3.1",

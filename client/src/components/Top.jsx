@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './../app.css';
 
+import Searchbar from './Searchbar.jsx';
 import Dropdown from './Dropdown.jsx';
 
 class Top extends React.Component {
@@ -44,24 +45,8 @@ class Top extends React.Component {
           </a>
         </span>
         <span className="search">
-          <span className="search-one">
-            <span className="search-title">Find</span>
-            <div className="dropdown">
-              <input className="searchbar" placeholder="tacos, cheap dinner, Max's"
-                onChange={this.updateRestaurantSearch}
-              />
-              {this.state.restaurantSearch !== '' ?
-                <Dropdown items={this.state.restaurants} hrefs={this.state.restaurantsHref}/>
-                : undefined
-              }
-            </div>
-          </span>
-          <span className="search-two">
-            <span className="search-title">Near</span>
-            <input className="searchbar" placeholder="current city goes here"
-              onChange={this.updateLocationSearch}
-            />
-          </span>
+          <Searchbar title='Find' hint='tacos, cheap dinner, Max&apos;s' />
+          <Searchbar title='Near' hint='current city goes here'/>
           <span className="search-button"><a href="#"><img className="search-icon" src="http://www.pvhc.net/img2/lnuceeldknrdpozttbxm.png" /></a></span>
         </span>
         <span className="sign-up"><a href="/signup" onClick={this.props.goSignup}>Sign Up</a></span>
