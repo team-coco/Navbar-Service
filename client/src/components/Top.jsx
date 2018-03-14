@@ -1,9 +1,11 @@
 import React from 'react';
 import styles from './../app.css';
 
-export default function Top(props) {
-  return (
-    <div className="top">
+class Top extends React.Component {
+
+  render() {
+    return (
+      <div className="top">
       <span className="logo">
         <a onClick={props.goHome} href="/home">
         <img className="logo-pic" src="https://cdn.drawception.com/images/panels/2012/4-9/KTb4sW8wYC-6.png" />
@@ -22,5 +24,6 @@ export default function Top(props) {
       </span>
       <span className="sign-up"><a href="/signup" onClick={props.goSignup}>Sign Up</a></span>
     </div>
-  )
+    );
+  }
 }
