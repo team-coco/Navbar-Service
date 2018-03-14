@@ -74,6 +74,10 @@ a {
   border: none;
 }
 
+.searchbar:focus {
+  outline: none;
+}
+
 .searchbar, input::-webkit-input-placehl {
   font-size: 12px;
 }
