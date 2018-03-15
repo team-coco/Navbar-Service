@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const navbarRoute = require('./routes/navbar')
+
+const db = require('./../database');
+const navbarRoute = require('./routes/navbar');
 
 app.use(express.static('./client/dist'))
 
