@@ -1,18 +1,18 @@
 const mysql = require('mysql');
 
 const connection = mysql.createConnection({
-  host: "chompy-test-database.cr8yw4uwndba.us-west-1.rds.amazonaws.com",
-  user: "root",
-  database: "chompyremote",
-  password: "chompydatabase"
+	host: 'localhost',
+	user: 'root',
+	database: 'yelp_db',
+	password: '',
 });
 
 connection.connect(function(err) {
 	if (err) {
 		console.log('ERROR');
-  } else {
-  	console.log('MYSQL IS CONNECTED')
-  }
+	} else {
+		console.log('MYSQL IS CONNECTED')
+	}
 });
 
 module.exports = connection;

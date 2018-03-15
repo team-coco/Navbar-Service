@@ -10,7 +10,8 @@ class Searchbar extends React.Component {
 
 		this.state = {
 			input: '',
-			focused: false,
+			inputFocused: false,
+			dropdownFocused: false,
 			dropdownItems: [
         'place1',
         'place2',
@@ -25,19 +26,43 @@ class Searchbar extends React.Component {
 	}
 
 	queryRestaurants = (query) => {
-		axios.get('/navbar/business/' + query)
+		if (query === '') {
+			return;
+		}
+
+		axios.get('/navbar/business/' + encodeURIComponent(query))
 			.then((res) => {
-				console.log(res);
+				return res.data;
+			})
+			.then((restaurants) => {
+				this.setState({
+					dropdownItems: restaurants.map((restaurant) => {
+						return restaurant.name;
+					}),
+					dropdownLinks: restaurants.map((restaurant) => {
+						return restaurant.id;
+					}),
+				});
+			})
+			.catch((err) => {
+				console.error(err);
 			});
 	}
 
 	updateInput = (event) => {
-    let input = event.target.value;
+		let input = event.target.value;
     this.setState({input});
+
+		this.queryRestaurants(input);
 	}
 
-	toggleFocus = () => {
-		this.setState({focused: !this.state.focused});
+	toggleInputFocus = (e) => {
+		this.setState({inputFocused: !this.state.inputFocused});
+	}
+
+	toggleDropdownFocus = () => {
+		console.log('hi');
+		this.setState({dropdownFocused: !this.state.dropdownFocused});
 	}
 
 	render() {
@@ -47,11 +72,13 @@ class Searchbar extends React.Component {
 				<div className="dropdown">
 					<input className="searchbar" placeholder={this.props.hint}
 						onChange={this.updateInput}
-						onFocus={this.toggleFocus}
-						onBlur={this.toggleFocus}
+						onBlur={this.toggleInputFocus}
 					/>
-					{this.state.focused && this.state.input !== '' ?
-						<Dropdown items={this.state.dropdownItems} hrefs={this.state.dropdownLinks}/>
+					{this.state.input !== '' ?
+						<Dropdown items={this.state.dropdownItems} hrefs={this.state.dropdownLinks}
+							onFocus={this.toggleDropdownFocus}
+							onBlur={this.toggleDropdownFocus}
+						/>
 						: undefined
 					}
 				</div>
