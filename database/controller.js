@@ -24,7 +24,7 @@ var getSimilarCities = function(query, count, callback) {
  * @param {callback} callback Manipulates the data from the query
  */
 var getSimilarRestaurants = function(query, count, callback) {
-    const query = 'SELECT * FROM business WHERE ';
+    const query = `SELECT * FROM business WHERE name SOUNDS LIKE '${query}' LIMIT ${count}`;
     database.query(query, (err, businesses) => {
         if (err) {
             console.error(err);
