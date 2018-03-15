@@ -1,25 +1,18 @@
-import mysql from 'mysql2';
-import Sequelize from 'sequelize';
+const mysql = require('mysql');
 
-const database = new Sequelize('chompyremote', 'root', 'chompydatabase', {
-	host: 'chompy-test-database.cr8yw4uwndba.us-west-1.rds.amazonaws.com',
-	dialect: 'mysql',
+const connection = mysql.createConnection({
+  host: "chompy-test-database.cr8yw4uwndba.us-west-1.rds.amazonaws.com",
+  user: "root",
+  database: "chompyremote",
+  password: "chompydatabase"
 });
 
-// database.query("SELECT * FROM user LIMIT 5", { type: Sequelize.QueryTypes.SELECT})
-//   .then(users => {
-// 		// We don't need spread here, since only the results will be returned for select queries
+connection.connect(function(err) {
+	if (err) {
+		console.log('ERROR');
+  } else {
+  	console.log('MYSQL IS CONNECTED')
+  }
+});
 
-// 		console.log(users[0]);
-//   });
-
-database
-	.authenticate()
-	.then(() => {
-		console.log('success');
-	})
-	.catch((err) => {
-		console.error('err');
-	});
-
-export default database;
+module.exports = connection;
