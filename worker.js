@@ -1,3 +1,5 @@
+/* seeds the database up to 10million entries with fake data */
+
 const cluster = require('cluster');
 const http = require('http');
 const numCPUs = require('os').cpus().length;

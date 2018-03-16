@@ -1,3 +1,5 @@
+/* feeds the real data ids through the hashing function */
+
 const mysql = require('mysql');
 const crypto = require('crypto');
 
