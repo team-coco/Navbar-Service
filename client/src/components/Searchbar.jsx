@@ -9,16 +9,8 @@ class Searchbar extends React.Component {
 
 		this.state = {
 			input: '',
-			dropdownItems: [
-        'place1',
-        'place2',
-        'place3',
-      ],
-      dropdownLinks: [
-        '--9e1ONYQuAa-CB_Rrw7Tw',
-        '--cjBEbXMI2obtaRHNSFrA',
-        '--DaPTJW3-tB1vP-PfdTEg',
-      ],
+			dropdownItems: [],
+			dropdownLinks: [],
 		}
 	}
 
