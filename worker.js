@@ -1,5 +1,8 @@
+const cluster = require('cluster');
+const http = require('http');
+const numCPUs = require('os').cpus().length;
+
 const mysql = require('mysql');
-const stream = require('stream');
 const faker = require('faker');
 
 const connection = mysql.createConnection({
@@ -48,51 +51,23 @@ var recursivelySeed = (connection) => {
 		recursivelySeed(connection);
 
 	});
-
 }
 
-connection.connect();
+console.log(`${numCPUs} CPUs running`);
 
-recursivelySeed(connection);
+if (cluster.isMaster) {
+	console.log(`Master ${process.pid} is running`);
 
+	for (let i = 0; i < numCPUs; ++i) {
+		cluster.fork();
+	}
 
+	cluster.on('exit', (worker, code, signal) => {
+    console.log(`worker ${worker.process.pid} died`);
+  });
+} else {
+	console.log(`Worker ${process.pid} started`);
 
-
-// .then((connection) => {
-// 	connection.query('SELECT COUNT(*) AS count FROM business')
-// 		.then((data) => {
-// 			return data[0].count;
-// 		})
-// 		.then((count) => {
-// 			console.log(count);
-
-// 			for (let i = count; i < 10000000; ++i) {
-// 				var name = faker.company.companyName();
-// 				var neighborhood = faker.address.county();
-// 				var address = faker.address.streetAddress();
-// 				var city = faker.address.city();
-// 				var state = faker.address.stateAbbr();
-// 				var postal_code = faker.address.zipCode();
-// 				var longitude = faker.address.longitude();
-// 				var latitude = faker.address.latitude();
-// 				var stars = faker.random.number(5);
-// 				var review_count = faker.random.number(64);
-// 				var is_open = faker.random.number(1);
-
-// 				connection.query(`INSERT INTO business
-// 					(name, neighborhood, address, city, state, postal_code, latitude, longitude, stars, review_count, is_open)
-// 					VALUES (${name}, ${neighborhood}, ${address}, ${city}, ${state}, ${postal_code}, ${latitude}, ${longitude}, ${stars}, ${review_count}, ${is_open})
-// 				`).then(() => {
-// 					console.log('hi');
-// 				})
-// 				.catch((err) => {
-// 					throw err;
-// 				})
-// 			}
-
-// 		});
-
-// 	return connection;
-// }).then((connection) => {
-// 	// connection.end();
-// });
+	connection.connect();
+	recursivelySeed(connection);
+}
