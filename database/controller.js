@@ -7,7 +7,11 @@ const database = require('./index');
  * @return Promise to manipulate cities data
  */
 var getSimilarCities = function(query, count) {
-	const sqlQuery = `SELECT DISTINCT * FROM business WHERE name SOUNDS LIKE '${query}' LIMIT ${count}`;
+	const sqlQuery = `
+	SELECT *
+	FROM city
+	WHERE name LIKE '${query}%'
+	LIMIT ${count}`;
 
 	return new Promise((resolve, reject) => {
 		database.query(sqlQuery, (err, businesses) => {
@@ -26,11 +30,12 @@ var getSimilarCities = function(query, count) {
  * @param {number} count the number of restaurants to return
  * @return Promise to manipulate restaurants data
  */
-var getSimilarRestaurants = function(query, count) {
+var getSimilarRestaurants = function(query, city, count) {
 	const sqlQuery = `
 		SELECT *
 		FROM business
-		WHERE name SOUNDS LIKE '${query}'
+		WHERE city LIKE '${city}%'
+		AND MATCH(name) AGAINST('${query}' IN NATURAL LANGUAGE MODE)
 		LIMIT ${count}
 	`;
 

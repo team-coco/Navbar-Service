@@ -9,6 +9,7 @@ class Searchbar extends React.Component {
 
 		this.state = {
 			input: '',
+			showDropdown: true,
 			dropdownItems: [],
 			dropdownLinks: [],
 		}
@@ -38,9 +39,21 @@ class Searchbar extends React.Component {
 
 	updateInput = (event) => {
 		let input = event.target.value;
-    this.setState({input});
+    this.setState({
+			input: input,
+			showDropdown: true,
+		});
+
+		this.props.onChange(event);
 
 		this.search(input);
+	}
+
+	onItemClick = (index) => {
+		this.setState({
+			input: this.state.dropdownItems[index],
+			showDropdown: false,
+		});
 	}
 
 	render() {
@@ -48,9 +61,12 @@ class Searchbar extends React.Component {
 			<span className="search-one">
 				<span className="search-title">{this.props.title}</span>
 				<div className="dropdown">
-					<input className="searchbar" placeholder={this.props.hint} onChange={this.updateInput}/>
-					{this.state.input !== '' ?
-						<Dropdown items={this.state.dropdownItems} hrefs={this.state.dropdownLinks}/>
+					<input className="searchbar" placeholder={this.props.hint} value={this.state.input} onChange={this.updateInput}/>
+					{this.state.showDropdown && this.state.input !== '' ?
+						<Dropdown items={this.state.dropdownItems}
+							hrefs={this.state.dropdownLinks}
+							onItemClick={this.onItemClick}
+						/>
 						: undefined
 					}
 				</div>
@@ -63,6 +79,7 @@ Searchbar.propTypes = {
 	title: PropTypes.string,
 	hint: PropTypes.string,
 	search: PropTypes.func,
+	onTextChange: PropTypes.func,
 }
 
 export default Searchbar;

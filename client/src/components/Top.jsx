@@ -12,16 +12,8 @@ class Top extends React.Component {
 		this.state = {
 			restaurantSearch: '',
 			locationSearch: '',
-			restaurants: [
-				'place1',
-				'place2',
-				'place3',
-			],
-			restaurantsHref: [
-				'--9e1ONYQuAa-CB_Rrw7Tw',
-				'--cjBEbXMI2obtaRHNSFrA',
-				'--DaPTJW3-tB1vP-PfdTEg',
-			],
+			restaurants: [],
+			restaurantsHref: [],
 		};
 	}
 
@@ -42,7 +34,7 @@ class Top extends React.Component {
 			return;
 		}
 
-		return axios.get('/navbar/business/' + encodeURIComponent(query))
+		return axios.get('/navbar/business/' + encodeURIComponent(this.state.locationSearch + '%') + '/' + encodeURIComponent(query))
 			.then((res) => {
 				let restaurants = res.data;
 				restaurants = restaurants.map((restaurant) => {
@@ -75,8 +67,12 @@ class Top extends React.Component {
 					</a>
 				</span>
 				<span className="search">
-					<Searchbar title='Find' hint='tacos, cheap dinner, Max&apos;s' search={this.queryRestaurants}/>
-					<Searchbar title='Near' hint='current city goes here' search={this.queryCities}/>
+					<Searchbar title='Find' hint='tacos, cheap dinner, Max&apos;s'
+						search={this.queryRestaurants} onChange={this.updateRestaurantSearch}
+					/>
+					<Searchbar title='Near' hint='current city goes here'
+						search={this.queryCities} onChange={this.updateLocationSearch}
+					/>
 					<span className="search-button"><a href="#"><img className="search-icon" src="http://www.pvhc.net/img2/lnuceeldknrdpozttbxm.png" /></a></span>
 				</span>
 				<span className="sign-up"><a href="/signup" onClick={this.props.goSignup}>Sign Up</a></span>

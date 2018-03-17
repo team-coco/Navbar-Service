@@ -5,10 +5,11 @@ const dbController = require('./../../database/controller');
 
 
 
-router.get('/business/:name', (req, res) => {
+router.get('/business/:city/:name', (req, res) => {
+	let city = req.params.city;
 	let name = req.params.name;
 
-	dbController.getSimilarRestaurants(name, 3)
+	dbController.getSimilarRestaurants(name, city, 3)
 	.then((data) => {
 		res.send(data);
 	})
