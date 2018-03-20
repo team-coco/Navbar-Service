@@ -1,9 +1,20 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-
-const db = require('./../database');
+const appConfig = require('./config');
+const { DatabasesEnum } = require('./constants');
 const navbarRoute = require('./routes/navbar');
+
+/* FLIP ME TO SWAP BETWEEN MYSQL AND MONGO */
+
+
+if (appConfig.database === DatabasesEnum.MYSQL) {
+	const db = require('./../mysql');
+} else {
+	const db = require('./../mongodb');
+}
+
+
 
 app.use(express.static('./client/dist'))
 
