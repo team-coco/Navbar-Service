@@ -12,35 +12,35 @@ var hash = function(id) {
 }
 
 const connection = mysql.createConnection({
-	host: 'localhost',
-	user: 'root',
-	database: 'yelp_db',
-	password: '',
+  host: 'localhost',
+  user: 'root',
+  database: 'yelp_db',
+  password: '',
 });
 
 connection.query(`
-	SELECT id as id FROM business
-	LIMIT ${realDataCount}
+  SELECT id as id FROM business
+  LIMIT ${realDataCount}
 `, (err, data) => {
-	var ids = data.map((rawDataPacket) => {
-		return rawDataPacket['id'];
-	});
+  var ids = data.map((rawDataPacket) => {
+    return rawDataPacket['id'];
+  });
 
-	newIds = ids.map((id) => {
-		return hash(id);
-	});
+  newIds = ids.map((id) => {
+    return hash(id);
+  });
 
-	for (var i = 0; i < ids.length; ++i) {
-		connection.query(`
-			UPDATE business SET id = '${newIds[i]}' WHERE id = '${ids[i]}'
-		`, (err, data) => {
-			if (err) {
-				throw err;
-			} else {
-				console.log('success');
-			}
-		});
-	}
+  for (var i = 0; i < ids.length; ++i) {
+    connection.query(`
+      UPDATE business SET id = '${newIds[i]}' WHERE id = '${ids[i]}'
+    `, (err, data) => {
+      if (err) {
+        throw err;
+      } else {
+        console.log('success');
+      }
+    });
+  }
 
 });
 

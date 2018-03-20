@@ -7,9 +7,9 @@ const navbarRoute = require('./routes/navbar');
 
 /* FLIP ME TO SWAP BETWEEN MYSQL AND MONGO */
 if (appConfig.database === DatabasesEnum.MYSQL) {
-	require('./../mysql');
+  require('./../mysql');
 } else {
-	require('./../mongodb');
+  require('./../mongodb');
 }
 
 const app = express();

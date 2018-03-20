@@ -1,46 +1,47 @@
 const express = require('express');
-const router = express.Router();
 const appConfig = require('./../config');
 const { DatabasesEnum } = require('./../constants');
 
-let dbContorller;
+const router = express.Router();
+
+let dbController;
 
 if (appConfig.database === DatabasesEnum.MYSQL) {
-	dbController = require('./../../mysql/controller');
+  dbController = require('./../../mysql/controller');
 } else {
-	dbController = require('./../../mongodb/controller');
+  dbController = require('./../../mongodb/controller');
 }
 
 router.get('/business/:city/:name', (req, res) => {
-	let city = decodeURI(req.params.city);
-	let name = decodeURI(req.params.name);
+  const city = decodeURI(req.params.city);
+  const name = decodeURI(req.params.name);
 
-	dbController.getSimilarRestaurants(name, city, 3)
-	.then((data) => {
-		res.send(data);
-	})
-	.catch((err) => {
-		res.status(500).send(err);
-	});
+  dbController.getSimilarRestaurants(name, city, 3)
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 });
 
 router.get('/city/:name', (req, res) => {
-	let name = decodeURI(req.params.name);
+  const name = decodeURI(req.params.name);
 
-	dbController.getSimilarCities(name, 3)
-	.then((data) => {
-
-		data = data.map((city, i) => {
-			return {
-				name: city.name,
-			};
-		});
-
-		res.send(data);
-	})
-	.catch((err) => {
-		res.status(500).send(err);
-	});
+  dbController.getSimilarCities(name, 3)
+    .then((data) => {
+      return data.map(city => {
+        return {
+          name: city.name,
+        };
+      });
+    })
+    .then((cities) => {
+      res.send(cities);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 });
 
 module.exports = router;

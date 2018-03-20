@@ -7,21 +7,21 @@ const database = require('./index');
  * @return Promise to manipulate cities data
  */
 var getSimilarCities = function(query, count) {
-	const sqlQuery = `
-	SELECT *
-	FROM city
-	WHERE name LIKE '${query}%'
-	LIMIT ${count}`;
+  const sqlQuery = `
+  SELECT *
+  FROM city
+  WHERE name LIKE '${query}%'
+  LIMIT ${count}`;
 
-	return new Promise((resolve, reject) => {
-		database.query(sqlQuery, (err, businesses) => {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(businesses);
-			}
-		});
-	});
+  return new Promise((resolve, reject) => {
+    database.query(sqlQuery, (err, businesses) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(businesses);
+      }
+    });
+  });
 }
 
 /**
@@ -31,26 +31,26 @@ var getSimilarCities = function(query, count) {
  * @return Promise to manipulate restaurants data
  */
 var getSimilarRestaurants = function(query, city, count) {
-	const sqlQuery = `
-		SELECT *
-		FROM business
-		WHERE city LIKE '${city}%'
-		AND MATCH(name) AGAINST('${query}' IN NATURAL LANGUAGE MODE)
-		LIMIT ${count}
-	`;
+  const sqlQuery = `
+    SELECT *
+    FROM business
+    WHERE city LIKE '${city}%'
+    AND MATCH(name) AGAINST('${query}' IN NATURAL LANGUAGE MODE)
+    LIMIT ${count}
+  `;
 
-	return new Promise((resolve, reject) => {
-		database.query(sqlQuery, (err, businesses) => {
-			if (err) {
-				reject(err);
-			} else {
-				resolve(businesses);
-			}
-		});
-	});
+  return new Promise((resolve, reject) => {
+    database.query(sqlQuery, (err, businesses) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(businesses);
+      }
+    });
+  });
 }
 
 module.exports = {
-	getSimilarCities,
-	getSimilarRestaurants,
+  getSimilarCities,
+  getSimilarRestaurants,
 };
