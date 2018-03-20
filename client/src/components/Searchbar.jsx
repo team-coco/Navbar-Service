@@ -44,16 +44,20 @@ class Searchbar extends React.Component {
 			showDropdown: true,
 		});
 
-		this.props.onChange(event);
+		this.props.onChange(input);
 
 		this.search(input);
 	}
 
 	onItemClick = (index) => {
+		let input = this.state.dropdownItems[index];
+
 		this.setState({
 			input: this.state.dropdownItems[index],
 			showDropdown: false,
 		});
+
+		this.props.onChange(input);
 	}
 
 	render() {

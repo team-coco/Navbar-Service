@@ -17,14 +17,14 @@ class Top extends React.Component {
 		};
 	}
 
-	updateRestaurantSearch = (event) => {
-		let restaurantSearch = event.target.value;
+	updateRestaurantSearch = (input) => {
+		let restaurantSearch = input;
 
 		this.setState({restaurantSearch});
 	}
 
-	updateLocationSearch = (event) => {
-		let locationSearch = event.target.value;
+	updateLocationSearch = (input) => {
+		let locationSearch = input;
 
 		this.setState({locationSearch});
 	}
@@ -34,7 +34,8 @@ class Top extends React.Component {
 			return;
 		}
 
-		return axios.get('/navbar/business/' + encodeURIComponent(this.state.locationSearch + '%') + '/' + encodeURIComponent(query))
+
+		return axios.get('/navbar/business/' + encodeURIComponent(this.state.locationSearch) + '/' + encodeURIComponent(query))
 			.then((res) => {
 				let restaurants = res.data;
 				restaurants = restaurants.map((restaurant) => {

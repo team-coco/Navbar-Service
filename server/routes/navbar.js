@@ -29,6 +29,13 @@ router.get('/city/:name', (req, res) => {
 
 	dbController.getSimilarCities(name, 3)
 	.then((data) => {
+
+		data = data.map((city, i) => {
+			return {
+				name: city.name,
+			};
+		});
+
 		res.send(data);
 	})
 	.catch((err) => {
