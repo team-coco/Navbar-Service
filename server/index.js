@@ -1,9 +1,9 @@
 const express = require('express');
 const path = require('path');
+const redis = require('redis');
 const appConfig = require('./config');
 const { DatabasesEnum } = require('./constants');
 const navbarRoute = require('./routes/navbar');
-
 
 /* FLIP ME TO SWAP BETWEEN MYSQL AND MONGO */
 if (appConfig.database === DatabasesEnum.MYSQL) {
@@ -13,8 +13,14 @@ if (appConfig.database === DatabasesEnum.MYSQL) {
 }
 
 const app = express();
+const redisClient = redis.createClient();
+
+redisClient.on('error', (err) => {
+  console.error(err);
+});
 
 app.use(express.static('./client/dist'));
+
 
 app.get('/:id', (req, res) => {
   res.sendFile(path.join(__dirname, './../client/dist/'));

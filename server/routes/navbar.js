@@ -12,36 +12,33 @@ if (appConfig.database === DatabasesEnum.MYSQL) {
   dbController = require('./../../mongodb/controller');
 }
 
-router.get('/business/:city/:name', (req, res) => {
+router.get('/business/:city/:name', async (req, res) => {
   const city = decodeURI(req.params.city);
   const name = decodeURI(req.params.name);
 
-  dbController.getSimilarRestaurants(name, city, 3)
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
-    });
+  try {
+    let data = await dbController.getSimilarRestaurants(name, city, 3)
+    res.send(data);
+
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
-router.get('/city/:name', (req, res) => {
+router.get('/city/:name', async (req, res) => {
   const name = decodeURI(req.params.name);
 
-  dbController.getSimilarCities(name, 3)
-    .then((data) => {
-      return data.map(city => {
-        return {
-          name: city.name,
-        };
-      });
-    })
-    .then((cities) => {
-      res.send(cities);
-    })
-    .catch((err) => {
-      res.status(500).send(err);
+  try {
+    let data   = await dbController.getSimilarCities(name, 3);
+    let cities = await data.map(city => {
+      return {name: city.name}
     });
+
+    res.send(cities);
+
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 module.exports = router;

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://localhost/yelp_db', () => {
+mongoose.connect('mongodb://localhost:27017/yelp_db', () => {
   console.log('connected to mongodb');
 }).catch((err) => {
   console.log(err);

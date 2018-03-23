@@ -24,6 +24,7 @@
     "bluebird": "^3.5.1",
     "css-loader": "^0.28.10",
     "eslint": "^4.19.0",
+    "express": "^4.16.3",
     "faker": "^4.1.0",
     "jquery": "^3.3.1",
     "mongodb": "^2.2.35",
@@ -36,10 +37,10 @@
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "redis": "^2.8.0",
     "sequelize": "^4.37.0",
     "style-loader": "^0.20.2",
-    "webpack-cli": "^2.0.10",
-    "express": "^4.16.3"
+    "webpack-cli": "^2.0.10"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

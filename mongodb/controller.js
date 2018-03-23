@@ -22,9 +22,6 @@ var getSimilarCities = function(query, count) {
  * @return Promise to manipulate restaurants data
  */
 var getSimilarRestaurants = function(query, city, count) {
-
-  console.log(query, city);
-
   return Business
   .find({$text: {$search: query}, city: city}, {score: {$meta: 'textScore'}})
   .sort({score: {$meta: 'textScore'}})
