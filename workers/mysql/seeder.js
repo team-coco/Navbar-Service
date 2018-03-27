@@ -4,14 +4,15 @@ const cluster = require('cluster');
 const http = require('http');
 const numCPUs = require('os').cpus().length;
 
+const keys = require('./../../keys');
 const mysql = require('mysql');
 const faker = require('faker');
 
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: keys.mysql_db_address,
   user: 'root',
   database: 'yelp_db',
-  password: '',
+  password: keys.mysql_db_password,
 });
 
 var recursivelySeed = (connection) => {

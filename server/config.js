@@ -1,5 +1,5 @@
 const { DatabasesEnum } = require('./constants');
 
-const database = DatabasesEnum.MONGODB;
+const database = DatabasesEnum.MYSQL;
 
 module.exports = { database };

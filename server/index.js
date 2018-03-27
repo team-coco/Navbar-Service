@@ -1,6 +1,8 @@
+require('newrelic');
+
 const express = require('express');
 const path = require('path');
-const redis = require('redis');
+const redisClient = require('./redisClient');
 const appConfig = require('./config');
 const { DatabasesEnum } = require('./constants');
 const navbarRoute = require('./routes/navbar');
@@ -13,11 +15,6 @@ if (appConfig.database === DatabasesEnum.MYSQL) {
 }
 
 const app = express();
-const redisClient = redis.createClient();
-
-redisClient.on('error', (err) => {
-  console.error(err);
-});
 
 app.use(express.static('./client/dist'));
 

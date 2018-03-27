@@ -1,5 +1,6 @@
 const express = require('express');
 const appConfig = require('./../config');
+const redisClient = require('./../redisClient');
 const { DatabasesEnum } = require('./../constants');
 
 const router = express.Router();
@@ -16,29 +17,55 @@ router.get('/business/:city/:name', async (req, res) => {
   const city = decodeURI(req.params.city);
   const name = decodeURI(req.params.name);
 
-  try {
-    let data = await dbController.getSimilarRestaurants(name, city, 3)
-    res.send(data);
+  redisClient.get(city + ',' + name, async (err, result) => {
+    if (err) {
+      res.status.send(err);
+    }
 
-  } catch (error) {
-    res.status(500).send(error);
-  }
+    if (result) {
+      res.send(result);
+    } else {
+      try {
+        let data = await dbController.getSimilarRestaurants(name, city, 3);
+        redisClient.setex(city + ',' + name, 5, JSON.stringify(data));
+        res.send(data);
+
+      } catch (error) {
+        res.status(500).send(error);
+      }
+    }
+  });
 });
 
 router.get('/city/:name', async (req, res) => {
   const name = decodeURI(req.params.name);
 
-  try {
-    let data   = await dbController.getSimilarCities(name, 3);
-    let cities = await data.map(city => {
-      return {name: city.name}
-    });
+  redisClient.get(name, async (err, result) => {
+    if (err) {
+      res.status.send(err);
+    }
 
-    res.send(cities);
+    if (result) {
+      res.send(result);
 
-  } catch (error) {
-    res.status(500).send(error);
-  }
+    } else {
+      try {
+        let data   = await dbController.getSimilarCities(name, 3);
+        let cities = await data.map(city => {
+          return {name: city.name};
+        });
+
+        redisClient.setex(name, 5, JSON.stringify(cities));
+
+        res.send(cities);
+
+      } catch (error) {
+        res.status(500).send(error);
+      }
+
+    }
+  });
+
 });
 
 module.exports = router;

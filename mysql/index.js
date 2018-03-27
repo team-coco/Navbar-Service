@@ -1,10 +1,11 @@
 const mysql = require('mysql');
+const keys = require('./../keys');
 
 const connection = mysql.createConnection({
-  host: 'localhost',
+  host: keys.mysql_db_address,
   user: 'root',
   database: 'yelp_db',
-  password: '',
+  password: keys.mysql_db_password,
 });
 
 connection.connect(function(err) {
